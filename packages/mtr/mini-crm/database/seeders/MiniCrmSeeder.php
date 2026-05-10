@@ -14,6 +14,7 @@ class MiniCrmSeeder extends Seeder
         $this->call([
             ManagerSeeder::class,
             CustomerSeeder::class,
+            TicketSeeder::class,
         ]);
     }
 }
