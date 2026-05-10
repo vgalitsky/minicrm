@@ -1,7 +1,7 @@
 <?php
 namespace Mtr\MiniCrm\Database\Factories;
 
-use Illuminate\Database\Eloquent\Factories\Factory;
+use \Illuminate\Database\Eloquent\Factories\Factory;
 use Mtr\MiniCrm\Models\Manager;
 use Illuminate\Support\Facades\Hash;
 
@@ -18,7 +18,7 @@ class ManagerFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'password' => Hash::make('password'),
-//            'is_admin' => false,
+            'is_admin' => false,
         ];
     }
 

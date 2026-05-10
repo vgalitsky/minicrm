@@ -3,17 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Mtr\MiniCrm\Models\Customer;
 
 return new class extends Migration {
-
-    const TABLE_NAME = 'minicrm_customers';
 
     /**
      * @return void
      */
     public function up(): void
     {
-        Schema::create(self::TABLE_NAME, function (Blueprint $table) {
+        Schema::create(Customer::TABLE_NAME, function (Blueprint $table) {
             $table->id();
 
             $table->string('name');
@@ -33,6 +32,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists(self::TABLE_NAME);
+        Schema::dropIfExists(Customer::TABLE_NAME);
     }
 };
