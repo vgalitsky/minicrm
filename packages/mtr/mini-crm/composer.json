@@ -5,8 +5,13 @@
   "license": "MIT",
   "autoload": {
     "psr-4": {
-      "Mtr\\MiniCrm\\": "src/"
+      "Mtr\\MiniCrm\\": "src/",
+      "Mtr\\MiniCrm\\Database\\Factories\\": "database/factories/",
+      "Mtr\\MiniCrm\\Database\\Seeders\\": "database/seeders/"
     }
+  },
+  "require": {
+    "php": "^8.4"  
   },
   "extra": {
     "laravel": {
