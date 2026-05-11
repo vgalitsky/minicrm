@@ -8,6 +8,7 @@ use Mtr\MiniCrm\Models\Manager;
 
 class ManagerSeeder extends Seeder
 {
+    const FAKE_MANAGERS_COUNT = 5;
     /**
      * @return void
      */
@@ -22,6 +23,6 @@ class ManagerSeeder extends Seeder
             ]
         );
 
-        Manager::newFactory()->count(10)->create();
+        Manager::newFactory()->count(self::FAKE_MANAGERS_COUNT)->create();
     }
 }

@@ -12,21 +12,23 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create(Manager::TABLE_NAME, function (Blueprint $table) {
+        Schema::create(Manager::tableName(), function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->boolean('is_admin')->default(false);
             $table->timestamps();
+
+            $table->index('email');
         });
     }
 
     /**
      * @return void
      */
-    public function down(): void
+    public function down(): voidgit add 
     {
-        Schema::dropIfExists(Manager::TABLE_NAME);
+        Schema::dropIfExists(Manager::tableName());
     }
 };
