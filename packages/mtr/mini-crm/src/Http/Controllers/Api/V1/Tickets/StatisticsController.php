@@ -24,8 +24,6 @@ class StatisticsController extends Controller
                 'week' => $this->periodStat(Ticket::thisWeek()),
                 'month' => $this->periodStat(Ticket::thisMonth()),
             ],
-
-            'statuses' => $this->statisticsByStatus(Ticket::query()),
         ]);
     }
 
@@ -39,7 +37,7 @@ class StatisticsController extends Controller
     {
         return [
             'total' => (clone $query)->count(),
-            ...$this->statisticsByStatus($query),
+            'by_status' => $this->statisticsByStatus($query),
         ];
     }
 
@@ -58,7 +56,7 @@ class StatisticsController extends Controller
 
         return collect(TicketStatus::cases())
             ->mapWithKeys(fn (TicketStatus $status) => [
-                $status->value => (int) ($counts[$status->value] ?? 0),
+                $status->label() => (int) ($counts[$status->value] ?? 'unknown status'),
             ])
             ->toArray();
     }
