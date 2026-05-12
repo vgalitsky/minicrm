@@ -2,20 +2,12 @@
 namespace Mtr\MiniCrm\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Mtr\MiniCrm\Database\Factories\TicketFactory;
+use Mtr\MiniCrm\Models\Ticket\TicketStatus;
 
-class Ticket extends Model
+class Ticket extends MiniCrmModel
 {
     use HasFactory;
-
-    const TABLE_NAME = 'minicrm_tickets';
-
-    const STATUS_NEW = 'new';
-    const STATUS_IN_PROGRESS = 'in_progress';
-    const STATUS_CLOSED = 'closed';
-
-    protected $table = self::TABLE_NAME;
 
     protected $fillable = [
         'customer_id',
@@ -25,6 +17,11 @@ class Ticket extends Model
         'status',
         'answered_at',
         'response',
+    ];
+
+    protected $casts = [
+        'status' => TicketStatus::class,
+        'answered_at' => 'datetime',
     ];
 
     /**

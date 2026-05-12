@@ -6,43 +6,49 @@ use Illuminate\Database\Seeder;
 use Mtr\MiniCrm\Models\Customer;
 use Mtr\MiniCrm\Models\Manager;
 use Mtr\MiniCrm\Models\Ticket;
+use Mtr\MiniCrm\Models\Ticket\TicketStatus;
 
 class TicketSeeder extends Seeder
 {
+    const FAKE_TICKETS_COUNT = 20;
+
     /**
      * @return void
      */
     public function run(): void
     {
-        $customers = Customer::query()->pluck('id')->toArray();
-        $managers = Manager::query()->pluck('id')->toArray();
-
-        if (empty($customers) || empty($managers)) {
-            $this->command->error('No customers or managers found');
+        if (!Customer::exists() || !Manager::exists()) {
+            $this->command->error('no arms - no cackes!');
             return;
         }
 
-        for ($i = 0; $i < 20; $i++) {
+        $randomCustomers = Customer::pluck('id')
+            ->take(self::FAKE_TICKETS_COUNT)
+            ->all();
+        
+        $randomManagers = Manager::pluck('id')
+            ->take(self::FAKE_TICKETS_COUNT)
+            ->all();
+
+        for ($i = 0; $i < self::FAKE_TICKETS_COUNT; $i++) {
         
             $status = fake()->randomElement([
-                Ticket::STATUS_NEW,
-                Ticket::STATUS_IN_PROGRESS,
-                Ticket::STATUS_CLOSED,
-            ]);
-
-            $factory = Ticket::factory();
+                TicketStatus::New,
+                TicketStatus::InProgress,
+                TicketStatus::Closed,
+            ]);;
 
             $factory = match ($status) {
-                Ticket::STATUS_NEW => $factory->statusNew(),
-                Ticket::STATUS_IN_PROGRESS => $factory->inProgress(),
-                Ticket::STATUS_CLOSED => $factory->closed(),
+                TicketStatus::InProgress => Ticket::factory()->inProgress(),
+                TicketStatus::Closed => Ticket::factory()->closed(),
+                default => Ticket::factory()->statusNew(),
             };
 
             $factory->create([
-                'customer_id' => fake()->randomElement($customers),
-                'manager_id' => $status === Ticket::STATUS_NEW 
-                    ? null 
-                    : fake()->randomElement($managers),
+                'customer_id' => fake()->randomElement($randomCustomers),
+                'manager_id' => $status === TicketStatus::New
+                    ? null
+                    : fake()->randomElement($randomManagers),
             ]);
         }
     }

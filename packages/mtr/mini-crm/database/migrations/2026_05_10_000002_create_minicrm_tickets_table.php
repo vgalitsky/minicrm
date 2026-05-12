@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Mtr\MiniCrm\Models\Customer;
 use Mtr\MiniCrm\Models\Manager;
 use Mtr\MiniCrm\Models\Ticket;
+use Mtr\MiniCrm\Models\Ticket\TicketStatus;
 
 return new class extends Migration {
 
@@ -14,7 +15,7 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create(Ticket::TABLE_NAME, function (Blueprint $table) {
+        Schema::create(Ticket::tableName(), function (Blueprint $table) {
             $table->id();
 
             $table->unsignedBigInteger('customer_id');
@@ -23,28 +24,33 @@ return new class extends Migration {
             $table->string('subject');
             $table->text('description')->nullable();
             $table->enum(
-                'status', 
-                [
-                    Ticket::STATUS_NEW, 
-                    Ticket::STATUS_IN_PROGRESS, 
-                    Ticket::STATUS_CLOSED
-                ]
-            )->default(Ticket::STATUS_NEW);
+                'status', TicketStatus::values()
+            )->default(TicketStatus::New);
 
-            $table->timestamp('answered_at')->nullable();
             $table->text('response')->nullable();
+            $table->timestamp('answered_at')->nullable();
+
+            $table->timestamps();
+
+            $table->index('status')
+            ->whereIn('status', [
+                TicketStatus::New,
+                TicketStatus::InProgress,
+            ])
+            ;
+
 
             $table->foreign('customer_id')
                 ->references('id')
-                ->on(Customer::TABLE_NAME)
+                ->on(Customer::tableName())
                 ->onDeleteCascade();
 
             $table->foreign('manager_id')
                 ->references('id')
-                ->on(Manager::TABLE_NAME)
+                ->on(Manager::tableName())
                 ->nullOnDelete();
 
-            $table->timestamps();
+            
         });
     }
 
@@ -53,6 +59,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists(Ticket::TABLE_NAME);
+        Schema::dropIfExists(Ticket::tableName());
     }
 };

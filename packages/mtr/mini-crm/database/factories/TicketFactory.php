@@ -3,6 +3,7 @@ namespace Mtr\MiniCrm\Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Mtr\MiniCrm\Models\Ticket;
+use Mtr\MiniCrm\Models\Ticket\TicketStatus;
 
 class TicketFactory extends Factory
 {
@@ -14,6 +15,7 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
+            'status' => TicketStatus::New,
             'subject' => fake()->sentence(4),
             'description' => fake()->paragraph(),       
         ];
@@ -27,7 +29,7 @@ class TicketFactory extends Factory
     public function statusNew(): static
     {
         return $this->state(fn () => [
-            'status' => Ticket::STATUS_NEW,
+            'status' => TicketStatus::New,
             'manager_id' => null,
             'answered_at' => null,
             'response' => null,
@@ -42,7 +44,7 @@ class TicketFactory extends Factory
     public function inProgress(): static
     {
         return $this->state(fn () => [
-            'status' => Ticket::STATUS_IN_PROGRESS,
+            'status' => TicketStatus::InProgress,
             'answered_at' => null,
             'response' => null,
         ]);
@@ -56,7 +58,7 @@ class TicketFactory extends Factory
     public function closed(): static
     {
         return $this->state(fn () => [
-            'status' => Ticket::STATUS_CLOSED,
+            'status' => TicketStatus::Closed,
             'answered_at' => now()->subDays(fake()->numberBetween(1, 30)),
             'response' => fake()->paragraph(),
         ]);
