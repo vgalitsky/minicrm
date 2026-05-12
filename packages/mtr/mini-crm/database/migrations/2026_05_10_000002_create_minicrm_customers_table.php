@@ -16,15 +16,9 @@ return new class extends Migration {
             $table->id();
 
             $table->string('name');
-            $table->string('email')->nullable()->unique();
-            $table->string('phone',32)->nullable()->unique();
-
-            $table->index('email');
-            $table->index('phone');
-
+            $table->string('email')->unique();
+            $table->string('phone',20)->unique();
             $table->timestamps();
-
-            $table->index(['email', 'phone']);
 
         });
     }
