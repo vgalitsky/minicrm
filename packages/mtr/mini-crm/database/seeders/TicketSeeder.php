@@ -10,7 +10,7 @@ use Mtr\MiniCrm\Models\Ticket\TicketStatus;
 
 class TicketSeeder extends Seeder
 {
-    const FAKE_TICKETS_COUNT = 20;
+    const FAKE_TICKETS_COUNT = 100;
 
     /**
      * @return void
@@ -49,6 +49,7 @@ class TicketSeeder extends Seeder
                 'manager_id' => $status === TicketStatus::New
                     ? null
                     : fake()->randomElement($randomManagers),
+                    'created_at' => fake()->dateTimeBetween('first day of this month'),
             ]);
         }
     }
