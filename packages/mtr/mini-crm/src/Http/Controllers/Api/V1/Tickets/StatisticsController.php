@@ -24,6 +24,10 @@ class StatisticsController extends Controller
                 'week' => $this->periodStat(Ticket::thisWeek()),
                 'month' => $this->periodStat(Ticket::thisMonth()),
             ],
+            "totals" => [
+                'total' => Ticket::count(),
+                'by_status' => $this->statisticsByStatus(Ticket::query()),
+            ],
         ]);
     }
 
