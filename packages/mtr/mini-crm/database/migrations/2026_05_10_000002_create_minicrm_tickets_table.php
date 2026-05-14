@@ -18,38 +18,36 @@ return new class extends Migration {
         Schema::create(Ticket::tableName(), function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('customer_id');
-            $table->unsignedBigInteger('manager_id')->nullable();
+            $table->foreignId('customer_id')
+                ->constrained(Customer::tableName())
+                ->cascadeOnDelete();
+
+            $table->foreignId('manager_id')
+                ->nullable()
+                ->constrained(Manager::tableName())
+                ->nullOnDelete();
 
             $table->string('subject');
-            $table->text('description')->nullable();
+            $table->text('description');
             $table->enum(
                 'status', TicketStatus::values()
-            )->default(TicketStatus::New);
+            )->default(TicketStatus::New->value);
 
             $table->text('response')->nullable();
             $table->timestamp('answered_at')->nullable();
 
             $table->timestamps();
 
-            $table->index('status')
-            ->whereIn('status', [
-                TicketStatus::New,
-                TicketStatus::InProgress,
-            ])
-            ;
+            $table->index('customer_id');
 
+            $table->index('manager_id');
 
-            $table->foreign('customer_id')
-                ->references('id')
-                ->on(Customer::tableName())
-                ->onDeleteCascade();
+            $table->index('created_at');
 
-            $table->foreign('manager_id')
-                ->references('id')
-                ->on(Manager::tableName())
-                ->nullOnDelete();
-
+            $table->index([
+                'status',
+                'created_at',
+            ]);
             
         });
     }
