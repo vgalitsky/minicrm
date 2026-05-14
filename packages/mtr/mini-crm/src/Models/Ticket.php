@@ -113,5 +113,26 @@ class Ticket extends MiniCrmModel
             ->whereYear('created_at', now()->year);
     }
 
+    /**
+     * @param Builder $query
+     * @param string $date
+     * 
+     * @return Builder
+     */
+    public function scopeDateFrom(Builder $query, string $date): Builder
+    {
+        return $query->whereDate('created_at', '>=', $date);
+    }
+
+    /**
+     * @param Builder $query
+     * @param string $date
+     * 
+     * @return Builder
+     */
+    public function scopeDateTo(Builder $query, string $date): Builder
+    {
+        return $query->whereDate('created_at', '<=', $date);
+    }
     
 }
