@@ -20,31 +20,42 @@ class TicketFilters
      */
     public function __invoke(Builder $query): void
     {
+        $filters = $this->request->validated();
+
         $query
-            ->when($this->request->filled('status'), fn ($query) =>
-                $query->status($this->request->enum('status', TicketStatus::class))
+            ->when(!empty($filters['status']), fn ($query) =>
+                $query->status(TicketStatus::from($filters['status']))
             )
-            ->when($this->request->filled('date_from'), fn ($query) =>
-                $query->dateFrom($this->request->date('date_from'))
+            ->when(!empty($filters['date_from']), fn ($query) =>
+                $query->dateFrom($filters['date_from'])
             )
-            ->when($this->request->filled('date_to'), fn ($query) =>
-                $query->dateTo($this->request->date('date_to'))
+            ->when(!empty($filters['date_to']), fn ($query) =>
+                $query->dateTo($filters['date_to'])
             )
-            ->when($this->request->filled('customer_email'), fn ($query) =>
+            ->when(!empty($filters['customer_email']), fn ($query) =>
                 $query->whereHas('customer', fn ($customer) =>
-                    $customer->where('email', 'like', '%' . $this->request->string('customer_email') . '%')
+                    $customer->where('email', 'like', '%' . $this->escapeLike($filters['customer_email']) . '%')
                 )
             )
-            ->when($this->request->filled('customer_phone'), fn ($query) =>
+            ->when(!empty($filters['customer_phone']), fn ($query) =>
                 $query->whereHas('customer', fn ($customer) =>
-                    $customer->where('phone', 'like', '%' . preg_replace('/\D+/', '', $this->request->input('customer_phone')) . '%')
+                    $customer->where('phone', 'like', '%' . preg_replace('/\D+/', '', $filters['customer_phone']) . '%')
                 )
             )
-            ->when($this->request->filled('customer_name'), fn ($query) =>
+            ->when(!empty($filters['customer_name']), fn ($query) =>
                 $query->whereHas('customer', fn ($customer) =>
-                    $customer->where('name', 'like', '%' . $this->request->string('customer_name') . '%')
+                    $customer->where('name', 'ilike', '%' . $this->escapeLike($filters['customer_name']) . '%')
                 )
             )
             ;
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    private function escapeLike(string $value): string
+    {
+        return addcslashes(trim($value), '\\%_');
     }
 }

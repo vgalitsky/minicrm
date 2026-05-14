@@ -134,5 +134,13 @@ class Ticket extends MiniCrmModel
     {
         return $query->whereDate('created_at', '<=', $date);
     }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->status === TicketStatus::Closed;
+    }
     
 }

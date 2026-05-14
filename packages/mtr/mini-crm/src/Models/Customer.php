@@ -5,7 +5,6 @@ namespace Mtr\MiniCrm\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Mtr\MiniCrm\Database\Factories\CustomerFactory;
-use Mtr\MiniCrm\Models\Attributes\HasTablePrefix;
 
 class Customer extends MiniCrmModel
 {

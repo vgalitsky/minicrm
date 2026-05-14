@@ -16,7 +16,7 @@ class IndexController extends Controller
      * 
      * @return \Illuminate\Contracts\View\View
      */
-    public function index(TicketFiltersRequest $request)
+    public function __invoke(TicketFiltersRequest $request)
     {
         $tickets = Ticket::with(['customer', 'manager'])
             ->tap(new TicketFilters($request))
@@ -28,7 +28,7 @@ class IndexController extends Controller
         return view('minicrm::admin.tickets.index', [
             'filters' => $request->validated() ?? [],
             'tickets' => $tickets,
-            'statuses' => TicketStatus::values(),
+            'statuses' => TicketStatus::cases(),
         ]);
     }
 }

@@ -2,7 +2,6 @@
 namespace Mtr\MiniCrm\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Arr;
 use Mtr\MiniCrm\Models\Ticket\TicketStatus;
 
 class TicketFiltersRequest extends FormRequest
@@ -30,9 +29,9 @@ class TicketFiltersRequest extends FormRequest
             'status' => $statusRules,
             'date_from' => 'nullable|date',
             'date_to' => 'nullable|date|after_or_equal:date_from',
-            'customer_name' => 'nullable|string',
-            'customer_email' => 'nullable|string',
-            'customer_phone' => 'nullable|string',
+            'customer_name' => 'nullable|string|max:120',
+            'customer_email' => 'nullable|string|max:190',
+            'customer_phone' => 'nullable|string|max:32',
         ];
     }
 
