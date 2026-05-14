@@ -21,8 +21,9 @@ class IndexController extends Controller
         $tickets = Ticket::with(['customer', 'manager'])
             ->tap(new TicketFilters($request))
             ->latest()
-            ->paginate(15);
-        ;
+            ->paginate(15)
+            ->withQueryString()
+            ;
 
         return view('minicrm::admin.tickets.index', [
             'filters' => $request->validated() ?? [],
