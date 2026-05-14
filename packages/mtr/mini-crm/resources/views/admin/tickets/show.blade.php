@@ -4,11 +4,16 @@
     <link rel="stylesheet" href="{{ asset('vendor/minicrm/admin/css/ticket.css') }}">
 @endpush
 @section('content')
+@php
+    $indexUrl = route('minicrm.admin.tickets.index');
+    $backUrl = request()->query('back');
+    $backUrl = is_string($backUrl) && str_starts_with($backUrl, $indexUrl) ? $backUrl : $indexUrl;
+@endphp
 
 <article class="ticket-article">
 
     <header class="header">
-        <a href="{{ request()->query('back') ?? route('minicrm.admin.tickets.index') }}" class="back">&#8592; Back</a>
+        <a href="{{ $backUrl }}" class="back">&#8592; Back</a>
         <div class="title-row">
             <h1 class="title">{{ $ticket->subject }}</h1>
             <span class="badge badge--{{ $ticket->status->value }}">{{ $ticket->status->label() }}</span>
@@ -72,7 +77,7 @@
                 >
                     @csrf
                     @method('PATCH')
-                    <input type="hidden" name="back" value="{{ request()->query('back') ?? route('minicrm.admin.tickets.index') }}">
+                    <input type="hidden" name="back" value="{{ $backUrl }}">
 
                     <div class="status-options">
                         @foreach($statuses as $status)

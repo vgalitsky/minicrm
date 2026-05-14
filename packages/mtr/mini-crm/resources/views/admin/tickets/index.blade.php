@@ -103,7 +103,7 @@
                     <div class="footer">
                         <span class="date">{{ $ticket->created_at->diffForHumans() }}</span>
                         
-                        <a href="{{ route('minicrm.admin.tickets.show', $ticket) }}" class="details-link">Details &#8594;</a>
+                        <a href="{{ route('minicrm.admin.tickets.show', ['ticket' => $ticket, 'back' => request()->fullUrl()]) }}" class="details-link">Details &#8594;</a>
                     </div>
                 </article>
 

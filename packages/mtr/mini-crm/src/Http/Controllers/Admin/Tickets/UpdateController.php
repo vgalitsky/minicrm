@@ -43,8 +43,15 @@ class UpdateController extends Controller
             'status' => TicketStatus::from($validated['status']),
         ]);
 
+        $routeParams = ['ticket' => $ticket];
+        $back = $request->input('back');
+
+        if (is_string($back) && $back !== '') {
+            $routeParams['back'] = $back;
+        }
+
         return redirect()
-            ->route('minicrm.admin.tickets.show', $ticket)
+            ->route('minicrm.admin.tickets.show', $routeParams)
             ->with('success', 'Status updated successfully to "' . $ticket->status->label() . '"');
     }
 
