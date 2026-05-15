@@ -18,6 +18,8 @@ class IndexController extends Controller
      */
     public function __invoke(TicketFiltersRequest $request)
     {
+        $request->session()->put('minicrm.admin.tickets.index_url', $request->fullUrl());
+
         $tickets = Ticket::with(['customer', 'manager'])
             ->tap(new TicketFilters($request))
             ->latest()

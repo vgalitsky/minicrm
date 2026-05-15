@@ -206,6 +206,32 @@
 		}
 	}
 
+    & .response {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.85rem;
+        border-radius: 10px;
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        border: 1px solid var(--c-border);
+
+        & .response-title {
+            margin: 0;
+            font-size: 0.83rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: var(--c-muted);
+        }
+
+        & p {
+            margin: 0;
+            white-space: pre-wrap;
+            line-height: 1.55;
+            color: var(--c-text);
+        }
+    }
+
 	& .row {
 		display: flex;
 		justify-content: space-between;
