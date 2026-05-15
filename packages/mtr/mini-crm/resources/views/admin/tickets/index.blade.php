@@ -79,20 +79,27 @@
             @foreach($tickets as $ticket)
 
                 <article class="card" data-status="{{ $ticket->status }}">
-                    <div class="accent"></div>
+                    <!--div class="accent"></div-->
 
                     <div class="content">
                         <div class="top">
                             <h3 class="subject">{{ $ticket->subject }}</h3>
-                            <span class="badge badge--{{ $ticket->status }}">
-                                {{ $ticket->status }}
+                            <span>
+                                <span class="badge badge--{{ $ticket->status }}">
+                                    {{ $ticket->status }}
+                                </span>
+                                @if($ticket->media->isNotEmpty())
+                                    <span class="badge badge--info" title="{{ $ticket->media->count() }} attachment(s)">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><path d="M19 2H5C3.897 2 3 2.897 3 4v16c0 1.103.897 2 2 2h14c1.103 0 2-.897 2-2V4c0-1.103-.897-2-2-2zm0 18H5V4h14v16z"/><path d="M8 6h8v2H8zm0 4h8v2H8z"/></svg>
+                                    </span>
+                                @endif
                             </span>
                         </div>
 
                         <div class="meta">
                             <div class="meta-row">
-                                <strong class="label">Customer</strong>
-                                <span>{{ $ticket->customer->name }}</span>
+                                <strong class="label">From</strong>
+                                <span title="{{ $ticket->customer->email }} | {{ $ticket->customer->phone }}">{{ $ticket->customer->name }}</span>
                             </div>
                             <div class="meta-row">
                                 <strong class="label">Manager</strong>
@@ -101,9 +108,9 @@
                         </div>
                     </div>
                     <div class="footer">
-                        <span class="date">{{ $ticket->created_at->diffForHumans() }}</span>
+                        <span class="date" title="{{ $ticket->created_at->toDayDateTimeString() }}">{{ $ticket->created_at->diffForHumans() }}</span>
                         
-                        <a href="{{ route('minicrm.admin.tickets.show', ['ticket' => $ticket, 'back' => request()->fullUrl()]) }}" class="details-link">Details &#8594;</a>
+                        <a href="{{ route('minicrm.admin.tickets.show', $ticket) }}" class="details-link">Details &#8594;</a>
                     </div>
                 </article>
 

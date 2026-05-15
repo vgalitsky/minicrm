@@ -27,7 +27,7 @@ class CreateTicketController extends Controller
     public function store(StoreTicketRequest $request): JsonResponse
     {
         $data = $request->validated();
-
+        
         /** @var Customer $resolved */
         $resolved = DB::transaction(
             fn () => $this->customers->resolveCustomer($data),
@@ -41,6 +41,8 @@ class CreateTicketController extends Controller
             'status'      => TicketStatus::New,
         ]);
 
+        $this->processAttachments($request, $ticket);
+
         return response()->json([
             'message' => 'Ticket created successfully.',
             'data'    => [
@@ -48,5 +50,22 @@ class CreateTicketController extends Controller
                 'status' => $ticket->status,
             ],
         ], Response::HTTP_CREATED);
+    }
+
+    /**
+     * @param StoreTicketRequest $request
+     * @param Ticket $ticket
+     * 
+     * @return void
+     */
+    private function processAttachments(StoreTicketRequest $request, Ticket $ticket): void
+    {
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $attachment) {
+                $ticket
+                    ->addMedia($attachment)
+                    ->toMediaCollection(Ticket::MEDIA_ATTACHMENTS);
+            }
+        }
     }
 }

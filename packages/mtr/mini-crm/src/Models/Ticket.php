@@ -7,10 +7,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use Mtr\MiniCrm\Database\Factories\TicketFactory;
 use Mtr\MiniCrm\Models\Ticket\TicketStatus;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Ticket extends MiniCrmModel
+class Ticket extends MiniCrmModel implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
+    public const MEDIA_ATTACHMENTS = 'attachments';
 
     protected $fillable = [
         'customer_id',
@@ -35,7 +39,16 @@ class Ticket extends MiniCrmModel
         return TicketFactory::new();
     }
 
-
+    /**
+     * @return void
+     */
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection(self::MEDIA_ATTACHMENTS)
+            ->useDisk('public')
+            ;
+    }
     
     /**
      * The owner of the ticket

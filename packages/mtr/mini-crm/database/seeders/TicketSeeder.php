@@ -3,6 +3,7 @@
 namespace Mtr\MiniCrm\Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Http\UploadedFile;
 use Mtr\MiniCrm\Models\Customer;
 use Mtr\MiniCrm\Models\Manager;
 use Mtr\MiniCrm\Models\Ticket;
@@ -44,13 +45,39 @@ class TicketSeeder extends Seeder
                 default => Ticket::factory()->statusNew(),
             };
 
-            $factory->create([
+            $ticket = $factory->create([
                 'customer_id' => fake()->randomElement($randomCustomers),
                 'manager_id' => $status === TicketStatus::New
                     ? null
                     : fake()->randomElement($randomManagers),
                     'created_at' => fake()->dateTimeBetween('first day of this month'),
             ]);
+
+            $this->fakeAttachment($ticket);
+        }
+    }
+
+    /**
+     * @param Ticket $ticket
+     * 
+     * @return void
+     */
+    
+
+    private function fakeAttachment(Ticket $ticket): void
+    {
+        $count = fake()->numberBetween(0, 3);
+
+        for ($i = 0; $i < $count; $i++) {
+            $file = UploadedFile::fake()->image(
+                name: fake()->slug() . '.jpg',
+                width: 800,
+                height: 600
+            );
+
+            $ticket
+                ->addMedia($file)
+                ->toMediaCollection(Ticket::MEDIA_ATTACHMENTS);
         }
     }
 }

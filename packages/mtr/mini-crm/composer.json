@@ -3,6 +3,8 @@
   "description": "Mini CRM package",
   "type": "library",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "Mtr\\MiniCrm\\": "src/",
@@ -11,7 +13,12 @@
     }
   },
   "require": {
-    "php": "^8.4"  
+    "php": "^8.4",
+    "spatie/laravel-medialibrary": "^11.22",
+    "spatie/laravel-permission": "^7.4"
+  },
+  "require-dev": {
+    "itsgoingd/clockwork": "^5.3"
   },
   "extra": {
     "laravel": {
@@ -20,6 +27,9 @@
       ]
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  "scripts": {
+    "setup": [
+    ]
+  }
+  
 }

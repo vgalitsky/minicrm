@@ -30,6 +30,8 @@ class CustomerRepository
         if ($matches->isEmpty()) {
             $customer = Customer::create($data);
             $customer->created = true;
+
+            return $customer;
             // return [
             //     'customer' => Customer::create($data),
             //     'created'  => true,

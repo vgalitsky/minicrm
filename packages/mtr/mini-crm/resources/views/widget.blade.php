@@ -102,6 +102,7 @@
         <label>Email <input name="email" type="email" placeholder="you@example.com"></label>
         <label>Subject <input name="subject" placeholder="What is this about?" required></label>
         <label>Message <textarea name="description" placeholder="Describe your issue…" rows="5" required></textarea></label>
+        <label>Attachments <input name="attachments[]" type="file" multiple accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.xls,.xlsx"></label>
 
         <button type="submit">Submit</button>
 

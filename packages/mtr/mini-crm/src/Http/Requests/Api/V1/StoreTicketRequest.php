@@ -37,6 +37,9 @@ class StoreTicketRequest extends FormRequest
             'email' => 'required|email|max:255',
             'subject' => 'required|string|max:255',
             'description' => 'required|string|max:5000',
+
+            'attachments' => 'nullable|array|max:5',
+            'attachments.*' => 'file|max:10240|mimes:jpg,jpeg,png,gif,pdf,doc,docx,xls,xlsx',
         ];
     }
 
@@ -64,6 +67,12 @@ class StoreTicketRequest extends FormRequest
             'description.required' => 'Description is required.',
             'description.string' => 'Description must be a string.',
             'description.max' => 'Description must not exceed 5000 characters.',
+
+            'attachments.array' => 'Attachments must be an array.',
+            'attachments.max' => 'You can upload a maximum of 5 attachments.',
+            'attachments.*.file' => 'Each attachment must be a file.',
+            'attachments.*.max' => 'Each attachment must not exceed 10MB.',
+            'attachments.*.mimes' => 'Each attachment must be a valid file type (jpg, jpeg, png, gif, pdf, doc, docx, xls, xlsx).',
         ];
     }
 }

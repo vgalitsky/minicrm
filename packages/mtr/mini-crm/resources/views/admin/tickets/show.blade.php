@@ -45,16 +45,23 @@
                     <div class="description">
                         <p>{{ $ticket->description ?? '—' }}</p>
                     </div>
+
+                    @if($ticket->response)
                     <div class="response">
                         <h2>Response</h2>
                         <p>{{ $ticket->response ?? '—' }}</p>
                     </div>
+                    @endif
+
+                    
+                    
+                    
             </div>
         </div>
 
         <aside class="sidebar">
 
-                <div class="card card--meta">
+            <div class="card card--meta">
                     <div class="row">
                         <span>Manager</span>
                         <span>{{ $ticket->manager?->name ?? 'Unassigned' }}</span>
@@ -95,6 +102,20 @@
                         <p class="error">{{ $message }}</p>
                     @enderror
                 </form>
+            </div>
+            <div class="card card--attachments">
+                @if(empty($media))
+                    <p>No attachments.</p>
+                @else
+                    <ul class="attachments-list">
+                        @foreach($media as $item)
+                            <li>
+                                <a href="{{ $item['url'] }}" target="_blank" title="{{ $item['name'] }}">{{ $item['name'] }}</a>
+                                <span class="attachment-size">{{ Illuminate\Support\Number::fileSize($item['size']) }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
             </div>
 
         </aside>

@@ -20,7 +20,7 @@ class IndexController extends Controller
     {
         $request->session()->put('minicrm.admin.tickets.index_url', $request->fullUrl());
 
-        $tickets = Ticket::with(['customer', 'manager'])
+        $tickets = Ticket::with(['customer', 'manager', 'media'])
             ->tap(new TicketFilters($request))
             ->latest()
             ->paginate(15)
